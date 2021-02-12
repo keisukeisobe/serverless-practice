@@ -17,7 +17,6 @@ exports.handler = async () => {
 
   const completeData = corgis.map((corgi) => {
     const photo = unsplashData.find(p => corgi.id === p.id);
-    console.log(photo);
     return {
       ...corgi,
       alt: photo.alt_description,
