@@ -1,7 +1,9 @@
-const {hasuraRequest} = require('./util/hasura');
+
+const { hasuraRequest } = require('./util/hasura');
 
 exports.handler = async (event) => {
-  const {id} = JSON.parse(event.body);
+  const { id } = JSON.parse(event.body);
+
   const data = await hasuraRequest({
     query: `
       mutation UpdateBoopCount($id: String!) {
@@ -11,6 +13,7 @@ exports.handler = async (event) => {
         }
       }
     `,
+
     variables: {id}
   });
   
@@ -22,3 +25,4 @@ exports.handler = async (event) => {
     body: JSON.stringify(data),
   }
 }
+

@@ -5,6 +5,7 @@ exports.handler = async () => {
   const corgis = await fetch('https://no-cors-api.netlify.app/api/corgis')
   .then((res) => res.json());
 
+
   const unsplashPromise = fetch(
     'https://api.unsplash.com/collections/48405776/photos',
     {
@@ -32,15 +33,18 @@ exports.handler = async () => {
 
   const [unsplashData, hasuraData] = await Promise.all([unsplashPromise, hasuraPromise]);
 
+
   const completeData = corgis.map((corgi) => {
     const photo = unsplashData.find((p) => corgi.id === p.id);
     const boops = hasuraData.boops.returning.find((b) => b.id === corgi.id);
+
     return {
       ...corgi,
       alt: photo.alt_description,
       credit: photo.user.name,
       url: `${photo.urls.raw}&auto=format&fit=crop&w=300&h=300&q=80&crop=entropy`,
       boops: boops.count
+
     };
   });
 
@@ -52,3 +56,4 @@ exports.handler = async () => {
     body: JSON.stringify(completeData)
   };
 };
+

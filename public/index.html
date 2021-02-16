@@ -137,7 +137,9 @@
               currently playing: <br />
               ${corgi.favoriteSong}
             </p>
+
             <button onClick=${handleBoop} data-id="${corgi.id}" disabled=${booping}>
+
               ${buttonText}
             </button>
           </div>
@@ -148,9 +150,10 @@
         // TODO load corgis dynamically using serverless functions
         const corgis = await fetch('/.netlify/functions/load-corgis')
           .then((res) => res.json());
+
         render(
           html` ${corgis.map((corgi) => html` <${Corgi} corgi=${corgi} /> `)}`,
-          document.querySelector('.corgis'),
+          document.querySelector('.corgis')
         );
       }
 

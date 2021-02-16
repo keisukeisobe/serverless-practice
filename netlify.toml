@@ -3,4 +3,5 @@
   functions = "functions"
 
 [dev]
-  autoLaunch = "false"
+  autoLaunch = false
+
