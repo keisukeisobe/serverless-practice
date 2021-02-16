@@ -1,3 +1,4 @@
+
 const { hasuraRequest } = require('./util/hasura');
 
 exports.handler = async (event) => {
@@ -12,11 +13,16 @@ exports.handler = async (event) => {
         }
       }
     `,
-    variables: { id },
-  });
 
+    variables: {id}
+  });
+  
   return {
     statusCode: 200,
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(data),
-  };
-};
+  }
+}
+

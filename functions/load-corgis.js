@@ -2,9 +2,9 @@ const fetch = require('node-fetch');
 const { hasuraRequest } = require('./util/hasura');
 
 exports.handler = async () => {
-  const corgis = await fetch(
-    'https://no-cors-api.netlify.app/api/corgis/'
-  ).then((res) => res.json());
+  const corgis = await fetch('https://no-cors-api.netlify.app/api/corgis')
+  .then((res) => res.json());
+
 
   const unsplashPromise = fetch(
     'https://api.unsplash.com/collections/48405776/photos',
@@ -27,14 +27,12 @@ exports.handler = async () => {
       }
     `,
     variables: {
-      corgis: corgis.map(({ id }) => ({ id, count: 0 })),
-    },
-  });
+      corgis: corgis.map(({id}) => ({id, count: 0})),
+    }
+  })
 
-  const [unsplashData, hasuraData] = await Promise.all([
-    unsplashPromise,
-    hasuraPromise,
-  ]);
+  const [unsplashData, hasuraData] = await Promise.all([unsplashPromise, hasuraPromise]);
+
 
   const completeData = corgis.map((corgi) => {
     const photo = unsplashData.find((p) => corgi.id === p.id);
@@ -45,15 +43,17 @@ exports.handler = async () => {
       alt: photo.alt_description,
       credit: photo.user.name,
       url: `${photo.urls.raw}&auto=format&fit=crop&w=300&h=300&q=80&crop=entropy`,
-      boops: boops.count,
+      boops: boops.count
+
     };
   });
 
   return {
     statusCode: 200,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify(completeData),
+    body: JSON.stringify(completeData)
   };
 };
+

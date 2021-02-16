@@ -113,23 +113,18 @@
 
         const handleBoop = (event) => {
           event.preventDefault();
-
           setBooping(true);
-
           fetch('/.netlify/functions/add-boop', {
             method: 'POST',
-            body: JSON.stringify({ id: corgi.id }),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              setBoops(data.updated.count);
-              setBooping(false);
-            });
+            body: JSON.stringify({id: corgi.id})
+          }).then((res) => res.json())
+          .then((data) => {
+            setBoops(data.updated.count);
+            setBooping(false);
+          });
         };
 
-        const buttonText = booping
-          ? 'plz hold, booping...'
-          : `Booped ${boops} Times`;
+        const buttonText = booping ? 'plz wait...booping' : `Booped ${boops} times`;
 
         return html`
           <div class="corgi">
@@ -142,11 +137,9 @@
               currently playing: <br />
               ${corgi.favoriteSong}
             </p>
-            <button
-              onClick=${handleBoop}
-              data-id="${corgi.id}"
-              disabled=${booping}
-            >
+
+            <button onClick=${handleBoop} data-id="${corgi.id}" disabled=${booping}>
+
               ${buttonText}
             </button>
           </div>
@@ -154,9 +147,9 @@
       }
 
       async function loadCorgis() {
-        const corgis = await fetch(
-          '/.netlify/functions/load-corgis'
-        ).then((res) => res.json());
+        // TODO load corgis dynamically using serverless functions
+        const corgis = await fetch('/.netlify/functions/load-corgis')
+          .then((res) => res.json());
 
         render(
           html` ${corgis.map((corgi) => html` <${Corgi} corgi=${corgi} /> `)}`,
